@@ -14,7 +14,7 @@ The following software stack is needed to run the code
 - _FEniCS_ii_ install from [source](https://github.com/MiroK/fenics_ii) in the shell running FEniCS docker image
 
 ## Running the code
-There are 2 scripts in the repository
+There are 2 scripts in the repository. Once in `src` directory
 
-- `python bwe_problem.py` runs a convergence study of the stationary problem
-- `python ivp_problem.py` runs a convergence study of the transient problem
+- `python bvp_solver.py` runs a convergence study of the stationary problem
+- `python ivp_solver.py` runs a convergence study of the transient problem
