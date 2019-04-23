@@ -141,7 +141,7 @@ if __name__ == '__main__':
     table = [['h', 'dim(Wh)', '|u-uh|_1', '|u-uh|_0', '|p-ph|_0', '|u-uh|_oo', '|duh-du|_oo']]
 
     errors0, h0 = None, None
-    for n in [8, 16, 32, 64, 128]: #, 256, 512]:
+    for n in [8, 16, 32, 64, 128, 256, 512]:
         wh, time = solve_ivp(ncells=n, dt=1E-2/n)
 
         # We look at error in u_e, u_i

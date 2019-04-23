@@ -190,12 +190,12 @@ def table_print(table, nnorms):
     table = iter(table)
     # Header
     row = next(table)
-    print '|'.join(word.ljust(col_width) for word in row)
+    print '|'+'|'.join(word.ljust(col_width) for word in row)+'|'
     # Separator
-    print '|'.join(['-'*col_width]*len(row))
+    print '|'+'|'.join(['-'*col_width]*len(row))+'|'
     # Actual data
     for row in table:
-        print '|'.join(word.ljust(col_width) for word in row)
+        print '|'+'|'.join(word.ljust(col_width) for word in row)+'|'
 
 # --------------------------------------------------------------------
 
