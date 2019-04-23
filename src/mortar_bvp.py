@@ -175,6 +175,28 @@ class EmiBvpProblem(object):
     @property
     def b(self): return self.__get_b__()
 
+
+def string_fmt(data, nnorms):
+    '''Pretty print row of the table'''
+    return ((','.join(['%.2E, %d'] + ['%.2E(%.2f)']*nnorms)) % data).split(',')
+
+
+def table_print(table, nnorms):
+    '''Markdown ready table'''
+    table_ = iter(table)
+    table = [next(table_)] + [string_fmt(tuple(row), nnorms) for row in table_]
+    
+    col_width = max(len(word) for row in table for word in row)+2
+    table = iter(table)
+    # Header
+    row = next(table)
+    print '|'.join(word.ljust(col_width) for word in row)
+    # Separator
+    print '|'.join(['-'*col_width]*len(row))
+    # Actual data
+    for row in table:
+        print '|'.join(word.ljust(col_width) for word in row)
+
 # --------------------------------------------------------------------
 
 if __name__ == '__main__':
@@ -227,10 +249,9 @@ if __name__ == '__main__':
     beta = Constant(0)
     bcs = {k: ue_exact for k in (1, 2, 3, 4)}
 
-    msg = '%.2E %g'
-    msg = ' '.join([msg] + ['%.2E(%.2f)']*3)
+    table = [['h', 'dim(Wh)', '|ui-uih|_1', '|ue-ueh|_0', '|p-ph|_0']]
 
-    errors0, h0, table = None, None, []
+    errors0, h0 = None, None
     for n in (8, 16, 32, 64, 128, 256):
         mesh = UnitSquareMesh(n, n)
         
@@ -256,10 +277,7 @@ if __name__ == '__main__':
         errors0, h0 = errors, h
 
         dimW = sum(sub.dim() for sub in wh.function_space())
-        row = tuple([h, dimW] + sum(map(list, zip(errors, rates)), []))
-
-        table.append(msg % row)
-        print table[-1]
+        data = sum(map(list, zip(errors, rates)), [h, dimW])
+        table.append(data)
     # Summary
-    print '\n'+'\t'.join(['h', 'dofs', '|e_ui|', '|e_ue|', '|e_p|'])
-    for row in table: print row
+    table_print(table, len(errors))

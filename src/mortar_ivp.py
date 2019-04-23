@@ -120,11 +120,6 @@ def errornorm(f, fh, kind, **kwargs):
     return df.errornorm(f, fh, kind, **kwargs)
 
 
-def string_fmt(data, nnorms):
-    '''Pretty print row of the table'''
-    return ((','.join(['%.2E, %d'] + ['%.2E(%.2f)']*nnorms)) % data).split(',')
-
-
 def get_errors(ui_h, ue_h, ph):
     '''Solution errors as in Table 3 in the paper'''
     return np.array([
@@ -138,14 +133,15 @@ def get_errors(ui_h, ue_h, ph):
 
 if __name__ == '__main__':
     from dolfin import Function, set_log_level, WARNING
-
+    from mortar_bvp import table_print
+    
     set_log_level(WARNING)
 
     # Headers for the table
     table = [['h', 'dim(Wh)', '|u-uh|_1', '|u-uh|_0', '|p-ph|_0', '|u-uh|_oo', '|duh-du|_oo']]
 
     errors0, h0 = None, None
-    for n in [8, 16, 32, 64, 128, 256, 512]:
+    for n in [8, 16, 32, 64, 128]: #, 256, 512]:
         wh, time = solve_ivp(ncells=n, dt=1E-2/n)
 
         # We look at error in u_e, u_i
@@ -167,16 +163,7 @@ if __name__ == '__main__':
 
         dimW = sum(sub.dim() for sub in wh.function_space())
         data = sum(map(list, zip(errors, rates)), [h, dimW])
-        table.append(string_fmt(tuple(data), len(errors)))
+        table.append(data)
+    # Summary
     print
-    
-    col_width = max(len(word) for row in table for word in row)+2
-    table = iter(table)
-    # Header
-    row = next(table)
-    print '|'.join(word.ljust(col_width) for word in row)
-    # Separator
-    print '|'.join(['-'*col_width]*len(row))
-    # Actual data
-    for row in table:
-        print '|'.join(word.ljust(col_width) for word in row)
+    table_print(table, len(errors))
