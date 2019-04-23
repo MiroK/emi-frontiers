@@ -12,9 +12,10 @@ The following software stack is needed to run the code
 `fenicsproject run quay.io/fenicsproject/stable:2017.2.0`
 - _cbc.block_ install from [source](https://github.com/MiroK/cbc.block) in the shell running FEniCS docker image
 - _FEniCS_ii_ install from [source](https://github.com/MiroK/fenics_ii) in the shell running FEniCS docker image
+- _tqdm_ install from [source](https://github.com/tqdm/tqdm)
 
 ## Running the code
 There are 2 scripts in the repository. Once in `src` directory
 
-- `python bvp_solver.py` runs a convergence study of the stationary problem
-- `python ivp_solver.py` runs a convergence study of the transient problem
+- `python mortar_bvp.py` runs a convergence study of the stationary problem
+- `python mortar_ivp.py` runs a convergence study of the transient problem
